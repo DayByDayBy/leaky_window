@@ -176,13 +176,13 @@ const UserInfoComponent: React.FC = () => {
         <div className="user-info">
             <h1>leaky window</h1>
 
-            {renderGroup("time", userInfo.time, "time-info")}
-            {renderGroup("location", userInfo.location, "location-info")}
-            {renderGroup("coordinates", userInfo.coordinates, "coordinates-info")}
-            {renderGroup("device", userInfo.device, "device-info")}
-            {renderGroup("connection", userInfo.connection, "connection-info")}
-            {renderGroup("browser", userInfo.browser, "browser-info")}
-            {renderGroup("network", userInfo.network, "network-info")}
+            {renderGroup("your coordinates", userInfo.coordinates, "coordinates-info")}
+            {renderGroup("your location", userInfo.location, "location-info")}
+            {renderGroup("your time", userInfo.time, "time-info")}
+            {renderGroup("your device", userInfo.device, "device-info")}
+            {renderGroup("your connection", userInfo.connection, "connection-info")}
+            {renderGroup("your browser", userInfo.browser, "browser-info")}
+            {renderGroup("your network", userInfo.network, "network-info")}
         </div>
     );
 };
