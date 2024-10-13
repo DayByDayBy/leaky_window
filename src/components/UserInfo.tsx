@@ -149,13 +149,15 @@ const UserInfoComponent: React.FC = () => {
 
 
   const formatValue = (key: string, value: any): string => {
-    if (key === "country_population" && typeof value === "number") {
-        return `${value.toLocaleString()} people`;
+    switch (key) {
+        case "country_population":
+            return typeof value === "number" ? `${value.toLocaleString()} people ` : "n/a";
+        case "latitude":
+        case "longitude":
+            return typeof value === "number" ? value.toFixed(4) : "n/a";
+        default:
+            return value?.toString() ?? "n/a";
     }
-    if (["latitude", "longitude"].includes(key) && typeof value === "number") {
-        return value.toFixed(4);
-    }
-    return value?.toString() ?? "n/a"
 };
 
   const renderGroup = useCallback((
@@ -164,7 +166,7 @@ const UserInfoComponent: React.FC = () => {
     className: string
     ) => (
       <section className={`info-group ${className}`} aria-label={`${title} information`}>
-        <h2>{title}</h2>
+        <h2>{title}:</h2>
         {Object.entries(data).map(([key, value]) => {
             if (title === "location" && key === "country_population") {
                 return (
