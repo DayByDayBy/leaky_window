@@ -150,7 +150,7 @@ const UserInfoComponent: React.FC = () => {
 
   const formatValue = (key: string, value: any): string => {
     if (key === "country_population" && typeof value === "number") {
-        return `population: ${value.toLocaleString()}`;
+        return `${value.toLocaleString()} people`;
     }
     if (["latitude", "longitude"].includes(key) && typeof value === "number") {
         return value.toFixed(4);
