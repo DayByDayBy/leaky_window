@@ -1,0 +1,31 @@
+.user-info {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .user-info h1 {
+    color: #333;
+  }
+  
+  .info-box {
+    background-color: #f0f0f0;
+    border-radius: 2rem;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .info-box h2 {
+    color: #555;
+    font-size: 1em;
+  }
+  
+  .info-box p {
+    color: #666;
+    font-size: 0.9em;
+    word-break: break-all;
+  }
+  
