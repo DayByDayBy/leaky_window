@@ -3,6 +3,25 @@ import axios from "axios";
 import "./UserInfo.css";
 
 
+
+
+interface IpInfo {
+    ip: string;
+    city?: string;
+    region?: string;
+    country?: string;
+    country_capital?: string;
+    postal?: string;
+    latitude?: number;
+    longitude?: number;
+    timezone?: string;
+    currency?: string;
+    country_population?: number;
+    org?: string;
+    network?: string;
+}
+
+
 interface UserInfo {
     time: {
         localTime: string;
@@ -13,11 +32,11 @@ interface UserInfo {
         city?: string;
         region?: string;
         country?: string;
-        countryCapital?: string;
+        country_capital?: string;
         postal?: string;
         language?: string;
         currency?: string;
-        countryPopulation?: number;
+        country_population?: number;
     };
     coordinates: {
         latitude?: number;
@@ -61,12 +80,12 @@ const UserInfoComponent: React.FC = () => {
         }
     }, []);
 
-    const fetchIpInfo = useCallback(async (ipAddress: string): Promise<string> => {
+    const fetchIpInfo = useCallback(async (ipAddress: string): Promise<IpInfo> => {
         try {
             const response = await axios.get(`https://ipapi.co/${ipAddress}/json`);
             return response.data;
         } catch (error) {
-            throw new Error("Failed to fetch IP info");
+            throw new Error("failed to fetch IP info");
         }
     }, []);
 
@@ -74,32 +93,31 @@ const UserInfoComponent: React.FC = () => {
         try {
             setLoading(true)
             const ipAddress = await fetchIpAddress();
-            const ipInfo = await fetchIpInfo(ipAddress);
+            const IpInfo = await fetchIpInfo(ipAddress);
 
             const userInfo: UserInfo = {
                 time: {
                     localTime: new Date().toLocaleString(),
-                    timezone: ipInfo.timezone,
-                    timeZoneOffset: new Date().getTimezoneOffset(),
+                    timezone: IpInfo.timezone,
+                    timeZoneOffset: new Date().getTimezoneOffset()/60,
                 },
                 location: {
-                    city: ipInfo.city,
-                    region: ipInfo.region,
-                    country: ipInfo.country_name,
-                    countryCapital: ipInfo.country_capital,
-                    postal: ipInfo.postal,
-                    language: ipInfo.language,
-                    currency: ipInfo.currency,
-                    countryPopulation: ipInfo.country_population,
+                    city: IpInfo.city,
+                    region: IpInfo.region,
+                    country: IpInfo.country,
+                    country_capital: IpInfo.country_capital,
+                    postal: IpInfo.postal,
+                    language: navigator.language,
+                    currency: IpInfo.currency,
+                    country_population: IpInfo.country_population,
                 },
                 coordinates: {
-                    latitude: ipInfo.latitude,
-                    longitude: ipInfo.longitude,
+                    latitude: IpInfo.latitude,
+                    longitude: IpInfo.longitude,
                 },
                 device: {
                     screenWidth: window.screen.width,
                     screenHeight: window.screen.height,
-                    deviceMemory: (navigator as any).deviceMemory,
                     hardwareConcurrency: navigator.hardwareConcurrency,
                 },
                 connection: {
@@ -114,8 +132,8 @@ const UserInfoComponent: React.FC = () => {
                 network: {
                     userAgent: navigator.userAgent,
                     ipAddress,
-                    org: ipInfo.org,
-                    network: ipInfo.network,
+                    org: IpInfo.org,
+                    network: IpInfo.network,
                 },
             };
 
@@ -132,16 +150,21 @@ const UserInfoComponent: React.FC = () => {
     }, [getUserInfo]);
 
 
-    const renderGroup = useCallback(((title: string, date: Record<string, any>, className: string) => {
-            <div className={`info-group ${className}`}>
-                <h2>{title}</h2>
-                {Object.entries(data).map(([key, value]) => (
-                    <div key={key} className="info-item">
-                        <p>{value?.toString() ?? 'N/A'}</p>
-                    </div>
-                ))}
-            </div>
+    const renderGroup = useCallback((
+        title: string,
+        data: Record<string, any>,
+        className: string
+        ) => (
+        <div className={`info-group ${className}`}>
+            <h2>{title}</h2>
+            {Object.entries(data).map(([key, value]) => (
+                <div key={key} className="info-item">
+                    <p>{value?.toString() ?? "N/A"}</p>
+                </div>
+            ))}
+        </div>
     ), []);
+
 
 
     if (loading) return <div>loading...</div>;
