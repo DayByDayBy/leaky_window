@@ -177,7 +177,7 @@ const UserInfoComponent: React.FC = () => {
             <h1>leaky window</h1>
 
             {renderGroup("time", userInfo.time, "time-info")}
-            {renderGroup("location", userInfo.time, "location-info")}
+            {renderGroup("location", userInfo.location, "location-info")}
             {renderGroup("coordinates", userInfo.coordinates, "coordinates-info")}
             {renderGroup("device", userInfo.device, "device-info")}
             {renderGroup("connection", userInfo.connection, "connection-info")}
