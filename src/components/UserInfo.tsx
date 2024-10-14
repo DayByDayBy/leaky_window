@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, createContext, useContext } from "react";
 import axios from "axios";
 import "./UserInfo.css";
 
@@ -61,10 +61,73 @@ interface UserInfo {
   };
 }
 
+interface LocationData{
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+}
+interface LocationContextType{
+    locationData: LocationData | null;
+    loading: boolean;
+    error: string | null;
+}
+
+
+const LocationContext = createContext<LocationContextType>({
+    locationData: null,
+    loading: true,
+    error: null
+}
+);
+
+
+const LocationProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
+    const [locationData, setLocationData] = useState<LocationData | null> (null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState <string | null> (null);
+
+    const getLocation = useCallback(() => {
+        if (!navigator.geolocation){
+            setError('geolocation not available');
+            setLoading(false);
+            return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            setLocationData({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy,
+            });
+            setLoading(false);
+        },
+        () => {
+            setError('unable to retreive your location')
+            setLoading(false);
+        }
+    );
+    }, []);
+
+    useEffect(() => {
+        getLocation();
+    }, [getLocation]);
+
+return (
+    <LocationContext.Provider value={{ locationData, loading, error}}>
+        {children}
+    </LocationContext.Provider>
+)
+}
+
+const useLocation = () => useContext(LocationContext);
+
 const UserInfoComponent: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { locationData, loading: locationLoading, error: locationError } = useLocation();
+
 
   const fetchIpAddress = useCallback(async (): Promise<string> => {
     try {
@@ -109,7 +172,12 @@ const UserInfoComponent: React.FC = () => {
           currency: IpInfo.currency,
           country_population: IpInfo.country_population,
         },
-        coordinates: {
+        coordinates: locationData
+        ? {
+            latitude: locationData.latitude,
+            longitude: locationData.longitude
+        }
+        : {
           latitude: IpInfo.latitude,
           longitude: IpInfo.longitude,
         },
@@ -141,11 +209,13 @@ const UserInfoComponent: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [fetchIpAddress, fetchIpInfo]);
+  }, [fetchIpAddress, fetchIpInfo, locationData]);
 
   useEffect(() => {
+    if (!locationLoading){
     getUserInfo();
-  }, [getUserInfo]);
+  }
+  }, [getUserInfo, locationLoading]);
 
 
   const formatValue = (key: string, value: any): string => {
@@ -197,8 +267,9 @@ const UserInfoComponent: React.FC = () => {
     []
   );
 
-  if (loading) return <div>loading...</div>;
+  if (loading || locationLoading) return <div>loading...</div>;
   if (error) return <div>error: {error}</div>;
+  if (locationError) return <div>location error: {locationError}</div>
   if (!userInfo) return null;
 
   return (
@@ -210,6 +281,11 @@ const UserInfoComponent: React.FC = () => {
         userInfo.coordinates,
         "coordinates-info"
       )}
+      {locationData && (
+        <div className="info-item">
+            <strong>location accuracy:</strong> {locationData.accuracy.toFixed(2)} meters
+        </div>
+      )}
       {renderGroup("your location", userInfo.location, "location-info")}
       {renderGroup("your time", userInfo.time, "time-info")}
       {renderGroup("your device", userInfo.device, "device-info")}
@@ -220,4 +296,5 @@ const UserInfoComponent: React.FC = () => {
   );
 };
 
+export { LocationProvider };
 export default UserInfoComponent;

@@ -1,10 +1,14 @@
-import React from 'react';
-import UserInfo from './components/UserInfo';
+import React from "react";
+import UserInfoComponent, { LocationProvider } from "./components/UserInfo";
+
+ 
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <UserInfo />
+      <LocationProvider>
+        <UserInfoComponent />
+      </LocationProvider>
     </div>
   );
 };
