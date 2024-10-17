@@ -88,7 +88,6 @@ const LocationProvider: React.FC<{children: React.ReactNode}> = ({children}) => 
 
     const getLocation = useCallback(() => {
         if (!navigator.geolocation){
-            setError('geolocation not available');
             setLoading(false);
             return;
     }
@@ -267,9 +266,8 @@ const UserInfoComponent: React.FC = () => {
     []
   );
 
-  if (loading || locationLoading) return <div>loading...</div>;
+  if (loading) return <div>loading...</div>;
   if (error) return <div>error: {error}</div>;
-  if (locationError) return <div>location error: {locationError}</div>
   if (!userInfo) return null;
 
   return (
