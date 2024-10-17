@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import Autofiller from './Autofiller';
 import axios from "axios";
 import "./UserInfo.css";
 
@@ -203,8 +204,6 @@ const UserInfoComponent: React.FC = () => {
 
   return (
     <div className="user-info" role='main'>
-      <h1>leaky window</h1>
-
       {renderGroup(
         "your coordinates",
         userInfo.coordinates,
