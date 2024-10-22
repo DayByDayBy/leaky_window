@@ -309,13 +309,18 @@ const UserInfoComponent: React.FC = () => {
     <div className="user-info" role="main">
       <h1>leaky window</h1>
       <section className="central-content">
+        {locationError && (
+            <div className = "location-error" role="alert">
+                location error: {locationError}
+            </div>
+        )}
         {renderGroup(
           "your coordinates",
           userInfo.coordinates,
           "coordinates-info"
         )}
         <section className="map-placeholder">
-          <p>Map will be displayed here.</p>
+          <p>map to be displayed here...</p>
         </section>
       </section>
 
