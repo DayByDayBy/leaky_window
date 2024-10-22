@@ -1,8 +1,16 @@
-import React, { useState, useEffect, useCallback, createContext, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+} from "react";
 import axios from "axios";
 import "./UserInfo.css";
 
 interface IpInfo {
+  error?: boolean;
+  reason?: string;
   ip: string;
   city?: string;
   region?: string;
@@ -37,6 +45,7 @@ interface UserInfo {
   coordinates: {
     latitude?: number;
     longitude?: number;
+    accuracy?: number | string;
   };
   device: {
     screenWidth: number;
@@ -61,63 +70,70 @@ interface UserInfo {
   };
 }
 
-interface LocationData{
-    latitude: number;
-    longitude: number;
-    accuracy: number;
+interface LocationData {
+  latitude: number;
+  longitude: number;
+  accuracy: number;
 }
-interface LocationContextType{
-    locationData: LocationData | null;
-    loading: boolean;
-    error: string | null;
+interface LocationContextType {
+  locationData: LocationData | null;
+  loading: boolean;
+  error: string | null;
 }
-
 
 const LocationContext = createContext<LocationContextType>({
-    locationData: null,
-    loading: true,
-    error: null
-}
-);
+  locationData: null,
+  loading: true,
+  error: null,
+});
 
+const LocationProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [locationData, setLocationData] = useState<LocationData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const LocationProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
-    const [locationData, setLocationData] = useState<LocationData | null> (null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState <string | null> (null);
-
-    const getLocation = useCallback(() => {
-        if (!navigator.geolocation){
-            setLoading(false);
-            return;
+  const getLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      setError("Geolocation not available to your browser");
+      setLoading(false);
+      return;
     }
 
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+
     navigator.geolocation.getCurrentPosition(
-        (position) => {
-            setLocationData({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                accuracy: position.coords.accuracy,
-            });
-            setLoading(false);
-        },
-        () => {
-            setError('unable to retreive your location')
-            setLoading(false);
-        }
+      (position) => {
+        setLocationData({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracy: position.coords.accuracy,
+        });
+        setLoading(false);
+      },
+      (err) => {
+        setError(`unable to retreive your location: ${err.message}`);
+        setLoading(false);
+      },
+      options
     );
-    }, []);
+  }, []);
 
-    useEffect(() => {
-        getLocation();
-    }, [getLocation]);
+  useEffect(() => {
+    getLocation();
+  }, [getLocation]);
 
-return (
-    <LocationContext.Provider value={{ locationData, loading, error}}>
-        {children}
+  return (
+    <LocationContext.Provider value={{ locationData, loading, error }}>
+      {children}
     </LocationContext.Provider>
-)
-}
+  );
+};
 
 const useLocation = () => useContext(LocationContext);
 
@@ -125,15 +141,23 @@ const UserInfoComponent: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { locationData, loading: locationLoading, error: locationError } = useLocation();
-
+  const {
+    locationData,
+    loading: locationLoading,
+    error: locationError,
+  } = useLocation();
 
   const fetchIpAddress = useCallback(async (): Promise<string> => {
     try {
-      const response = await axios.get("https://api.ipify.org");
+      const response = await axios.get("https://api.ipify.org", {
+        timeout: 5000,
+      });
       return response.data;
     } catch (error) {
-      throw new Error("failed to fetch IP address");
+      if (axios.isAxiosError(error)) {
+        throw new Error(`failed to fetch IP address: ${error}`);
+      }
+      throw error;
     }
   }, []);
 
@@ -155,6 +179,10 @@ const UserInfoComponent: React.FC = () => {
       const ipAddress = await fetchIpAddress();
       const IpInfo = await fetchIpInfo(ipAddress);
 
+      const connection =  'connection' in navigator ?
+        (navigator as any).connection : null;
+
+
       const userInfo: UserInfo = {
         time: {
           localTime: new Date().toLocaleString(),
@@ -172,17 +200,20 @@ const UserInfoComponent: React.FC = () => {
           country_population: IpInfo.country_population,
         },
         coordinates: locationData
-        ? {
-            latitude: locationData.latitude,
-            longitude: locationData.longitude
-        }
-        : {
-          latitude: IpInfo.latitude,
-          longitude: IpInfo.longitude,
-        },
+          ? {
+              latitude: locationData.latitude,
+              longitude: locationData.longitude,
+              accuracy: locationData.accuracy,
+            }
+          : {
+              latitude: IpInfo.latitude,
+              longitude: IpInfo.longitude,
+              accuracy: "IP Based Only",
+            },
         device: {
           screenWidth: window.screen.width,
           screenHeight: window.screen.height,
+          deviceMemory: (navigator as any).deviceMemory,
           hardwareConcurrency: navigator.hardwareConcurrency,
         },
         connection: {
@@ -204,92 +235,100 @@ const UserInfoComponent: React.FC = () => {
 
       setUserInfo(userInfo);
     } catch (error) {
-      setError("failed to fetch info");
+      setError(error instantOf Error ? error.message : "failed to fetch info");
     } finally {
       setLoading(false);
     }
   }, [fetchIpAddress, fetchIpInfo, locationData]);
 
   useEffect(() => {
-    if (!locationLoading){
-    getUserInfo();
-  }
+    if (!locationLoading) {
+      getUserInfo();
+    }
   }, [getUserInfo, locationLoading]);
-
 
   const formatValue = (key: string, value: any): string => {
     switch (key) {
-        case "country_population":
-            return typeof value === "number" ? `${value.toLocaleString()} people ` : "n/a";
-        case "latitude":
-        case "longitude":
-            return typeof value === "number" ? value.toFixed(4) : "n/a";
-        default:
-            return value?.toString() ?? "n/a";
+      case "accuracy":
+        return typeof value === "number" ? `${value.toFixed(2)} meters` : value;
+      case "country_population":
+        return typeof value === "number"
+          ? `${value.toLocaleString()} people `
+          : "n/a";
+      case "latitude":
+      case "longitude":
+        return typeof value === "number" ? value.toFixed(4) : "n/a";
+      default:
+        return value?.toString() ?? "n/a";
     }
-};
+  };
 
-  const renderGroup = useCallback((
-    title: string, 
-    data: Record<string, any>, 
-    className: string
-    ) => (
-      <section className={`info-group ${className}`} aria-label={`${title} information`}>
+  const renderGroup = useCallback(
+    (title: string, data: Record<string, any>, className: string) => (
+      <section
+        className={`info-group ${className}`}
+        aria-label={`${title} information`}
+      >
         <h2>{title}:</h2>
         {Object.entries(data).map(([key, value]) => {
-            if (title === "location" && key === "country_population") {
-                return (
-                    <React.Fragment key={key}>
-                    <hr />
-                    <div className = "info-item">
-                    <strong>{key}:</strong> {formatValue(key, value)}
-                    </div>
-                    </React.Fragment>
-                );
-            }
-
-            if (title === "coordinates") {
-                return (
-                    <div key={key} className="info-item inline">
-                    <strong>{key === "latitude" ? "Lat" : "Long"}: </strong> {formatValue(key, value)}
-                    </div>
-                );
-            }
+          if (title === "location" && key === "country_population") {
             return (
-                <div key={key} className="info-item">
-                    <strong>{key}:</strong> {formatValue(key, value)}
-                </div>  
+              <React.Fragment key={key}>
+                <hr />
+                <div className="info-item">
+                  <strong>{key}:</strong> {formatValue(key, value)}
+                </div>
+              </React.Fragment>
             );
-})}
+          }
+
+          if (title === "coordinates") {
+            return (
+              <div key={key} className="info-item inline">
+                <strong>{key === "latitude" ? "Lat" : "Long"}: </strong>{" "}
+                {formatValue(key, value)}
+              </div>
+            );
+          }
+          return (
+            <div key={key} className="info-item">
+              <strong>{key}:</strong> {formatValue(key, value)}
+            </div>
+          );
+        })}
       </section>
     ),
     []
   );
 
-  if (loading) return <div>loading...</div>;
-  if (error) return <div>error: {error}</div>;
+  if (loading) return <div className="loading" role="status">loading...</div>;
+  if (error) return <div className="error" role="alert">error: {error}</div>;
   if (!userInfo) return null;
 
   return (
-    <div className="user-info" role='main'>
+    <div className="user-info" role="main">
       <h1>leaky window</h1>
+      <section className="central-content">
+        {renderGroup(
+          "your coordinates",
+          userInfo.coordinates,
+          "coordinates-info"
+        )}
+        <section className="map-placeholder">
+          <p>Map will be displayed here.</p>
+        </section>
+      </section>
 
-      {renderGroup(
-        "your coordinates",
-        userInfo.coordinates,
-        "coordinates-info"
-      )}
-      {locationData && (
-        <div className="info-item">
-            <strong>location accuracy:</strong> {locationData.accuracy.toFixed(2)} meters
-        </div>
-      )}
-      {renderGroup("your location", userInfo.location, "location-info")}
-      {renderGroup("your time", userInfo.time, "time-info")}
-      {renderGroup("your device", userInfo.device, "device-info")}
-      {renderGroup("your connection", userInfo.connection, "connection-info")}
-      {renderGroup("your browser", userInfo.browser, "browser-info")}
-      {renderGroup("your network", userInfo.network, "network-info")}
+      <section className="left-panel">
+        {renderGroup("your location", userInfo.location, "location-info")}
+        {renderGroup("your time", userInfo.time, "time-info")}
+      </section>
+      <section className="right-panel">
+        {renderGroup("your network", userInfo.network, "network-info")}
+        {renderGroup("your device", userInfo.device, "device-info")}
+        {renderGroup("your connection", userInfo.connection, "connection-info")}
+        {renderGroup("your browser", userInfo.browser, "browser-info")}
+      </section>
     </div>
   );
 };
