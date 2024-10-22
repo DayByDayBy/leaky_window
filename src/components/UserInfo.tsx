@@ -235,7 +235,7 @@ const UserInfoComponent: React.FC = () => {
 
       setUserInfo(userInfo);
     } catch (error) {
-      setError(error instantOf Error ? error.message : "failed to fetch info");
+      setError(error instanceof Error ? error.message : "failed to fetch info");
     } finally {
       setLoading(false);
     }
