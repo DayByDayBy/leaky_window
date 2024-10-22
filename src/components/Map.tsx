@@ -1,4 +1,3 @@
-// GoogleMap.tsx
 import React, { useEffect, useRef } from 'react';
 
 interface GoogleMapProps {
@@ -20,7 +19,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ latitude, longitude, accuracy }) 
   const markerRef = useRef<any>(null);
 
   useEffect(() => {
-    // Load Google Maps Script
     const loadGoogleMaps = () => {
       const script = document.createElement('script');
       script.innerHTML = `
@@ -53,7 +51,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ latitude, longitude, accuracy }) 
           title: "Your Location",
         });
 
-        // If accuracy is provided and it's a number, draw accuracy circle
         if (typeof accuracy === 'number') {
           new window.google.maps.Circle({
             map: mapInstance,
@@ -82,9 +79,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ latitude, longitude, accuracy }) 
     }
 
     return () => {
-      // Cleanup
+
       if (mapInstanceRef.current) {
-        // Clean up map instance if needed
       }
     };
   }, [latitude, longitude, accuracy]);
