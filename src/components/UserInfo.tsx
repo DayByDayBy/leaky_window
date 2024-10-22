@@ -179,7 +179,6 @@ const UserInfoComponent: React.FC = () => {
       const ipAddress = await fetchIpAddress();
       const IpInfo = await fetchIpInfo(ipAddress);
 
-
       const userInfo: UserInfo = {
         time: {
           localTime: new Date().toLocaleString(),
@@ -255,6 +254,10 @@ const UserInfoComponent: React.FC = () => {
       case "latitude":
       case "longitude":
         return typeof value === "number" ? value.toFixed(4) : "n/a";
+      case "deviceMemory":
+        return `${value.toLocaleString()} gb`;
+    case "hardwareConcurrency":
+            return `${value.toLocaleString()} cores`;
       default:
         return value?.toString() ?? "n/a";
     }
@@ -298,8 +301,18 @@ const UserInfoComponent: React.FC = () => {
     []
   );
 
-  if (loading) return <div className="loading" role="status">loading...</div>;
-  if (error) return <div className="error" role="alert">error: {error}</div>;
+  if (loading)
+    return (
+      <div className="loading" role="status">
+        loading...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="error" role="alert">
+        error: {error}
+      </div>
+    );
   if (!userInfo) return null;
 
   return (
@@ -307,9 +320,9 @@ const UserInfoComponent: React.FC = () => {
       <h1>leaky window</h1>
       <section className="central-content">
         {locationError && (
-            <div className = "location-error" role="alert">
-                location error: {locationError}
-            </div>
+          <div className="location-error" role="alert">
+            location error: {locationError}
+          </div>
         )}
         {renderGroup(
           "your coordinates",
