@@ -179,9 +179,6 @@ const UserInfoComponent: React.FC = () => {
       const ipAddress = await fetchIpAddress();
       const IpInfo = await fetchIpInfo(ipAddress);
 
-      const connection =  'connection' in navigator ?
-        (navigator as any).connection : null;
-
 
       const userInfo: UserInfo = {
         time: {
