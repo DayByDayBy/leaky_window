@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-const GoogleMap: React.FC<GoogleMapProps> = ({ latitude, longitude, accuracy }) => {
+const Map: React.FC<GoogleMapProps> = ({ latitude, longitude, accuracy }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markerRef = useRef<any>(null);
@@ -88,4 +88,4 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ latitude, longitude, accuracy }) 
   return <div ref={mapRef} className="google-map" style={{ width: '100%', height: '100%' }} />;
 };
 
-export default GoogleMap;
+export default Map;
