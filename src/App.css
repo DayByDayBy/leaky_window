@@ -14,18 +14,285 @@
 } */
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  /* main container */
+  .user-info {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr minmax(300px, 2fr) 1fr;
+      gap: 20px;
+      color: #000000;
+  }
+  
+  /* title  */
+  .user-info h1 {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #008081;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+  }
+  
+  /* central column wrapper, coordinates and map */
+  .central-content {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+  }
+  
+  /* coordinates  */
+  .coordinates-info {
+      background-color: #ffd700;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* map placeholder  */
+  .map-placeholder {
+      background-color: #d7b740;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  /* left side content wrapper */
+  .left-panel {
+      grid-column: 1;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  }
+  
+  /* right side content wrapper */
+  .right-panel {
+      grid-column: 3;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  }
+  
+  /* location & time information */
+  .location-info,
+  .time-info {
+      background-color: #48ada4;
+      color: white;
+  }
+  
+  /* Nntwork information */
+  .network-info {
+      background-color: #35938d;
+      color: white;
+  }
+  
+  /* other, less dramatic info */
+  .browser-info,
+  .device-info,
+  .connection-info {
+      background-color: #008081;
+      color: white;
+  }
+  
+  /* common styles for info groups */
+  .info-group {
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+  }
+  
+  .info-group:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* section headers */
+  .info-group h2 {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 5px;
+  }
+  
+  /* individual info items */
+  .info-item {
+      margin: 8px 0;
+      line-height: 1.4;
+  }
+  
+  .info-item strong {
+      display: inline-block;
+      min-width: 120px;
+      margin-right: 10px;
+  }
+  
+  /* inline items (for coordinates) */
+  .info-item.inline {
+      display: inline-block;
+      margin: 0 15px;
+      font-size: 1.2rem;
+  }
+  
+  /* divider styling */
+  hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      margin: 15px 0;
+  }
+  
+  /* screen reader only class */
+  .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+  }
+  
+  /* responsive design */
+  @media (max-width: 1024px) {
+      .user-info {
+        grid-template-columns: 1fr minmax(300px, 1.5fr);
+        padding: 15px;
+      }
+      
+      .central-content {
+        grid-column: 1 / -1;
+      }
+  
+      /* Move permissions container to bottom of left column */
+      .permissions-container {
+        grid-column: 1 / 2;
+        grid-row: 3;
+      }
+  
+      .left-panel {
+        grid-column: 1;
+        grid-row: 3;
+      }
+  
+      .right-panel {
+        grid-column: 2;
+        grid-row: 3;
+      }
+  }
+  
+  @media (max-width: 768px) {
+      .user-info {
+        grid-template-columns: 1fr;
+      }
+  
+      .central-content,
+      .left-panel,
+      .right-panel {
+        grid-column: 1;
+      }
+  
+      .left-panel {
+        grid-row: 3;
+      }
+  
+      .right-panel {
+        grid-row: 4;
+      }
+  
+      /* Move permissions container to bottom of the page on smaller screens */
+      .permissions-container {
+        grid-column: 1;
+        grid-row: 5;
+      }
+  }
+  
+  /* Permissions container */
+  .permissions-container {
+      grid-column: 2 / -2;  
+      margin-top: 1rem;   
+      transition: all 0.3s ease;
+  }
+  
+  /* Permissions title */
+  .permissions-title {
+      color: #008081;       
+      font-size: 1.2rem;   
+      margin-bottom: 1rem;
+  }
+  
+  /* Permissions list */
+  .permissions-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 5px;          
+      padding: 0;
+      list-style: none;
+  }
+  
+  /* Permission item */
+  .permission-item {
+      background-color: #48ada4; 
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  
+  .permission-name {
+      text-transform: capitalize;
+  }
+  
+  .permission-status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .permission-status.granted {
+      background-color: #35938d;
+  }
+  
+  .permission-status.denied {
+      background-color: #008081;
+  }
+  
+  .permission-status.prompt,
+  .permission-status.unsupported {
+      background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .permissions-loading {
+      text-align: center;
+      padding: 1rem;
+      color: #008081;
+  }
+  

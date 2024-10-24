@@ -1,0 +1,63 @@
+.permissions-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .permissions-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .permissions-list {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .permission-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .permission-item:last-child {
+    border-bottom: none;
+  }
+  
+  .permission-name {
+    text-transform: capitalize;
+  }
+  
+  .permission-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .permission-status.granted {
+    background-color: #e6ffe6;
+    color: #006600;
+  }
+  
+  .permission-status.denied {
+    background-color: #ffe6e6;
+    color: #cc0000;
+  }
+  
+  .permission-status.prompt,
+  .permission-status.unsupported {
+    background-color: #f0f0f0;
+    color: #666666;
+  }
+  
+  .permissions-loading {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+  }

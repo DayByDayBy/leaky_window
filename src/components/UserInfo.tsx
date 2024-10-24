@@ -6,7 +6,6 @@ import React, {
     useContext,
   } from "react";
   import axios from "axios";
-  import "./UserInfo.css";
   
   interface IpInfo {
     error?: boolean;
@@ -160,6 +159,9 @@ import React, {
         throw error;
       }
     }, []);
+
+
+
   
     const fetchIpInfo = useCallback(
       async (ipAddress: string): Promise<IpInfo> => {
@@ -343,7 +345,9 @@ import React, {
           {renderGroup("your device", userInfo.device, "device-info")}
           {renderGroup("your connection", userInfo.connection, "connection-info")}
           {renderGroup("your browser", userInfo.browser, "browser-info")}
+
         </section>
+
       </div>
     );
   };

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import './PermissionsList.css';
+import './Permissions.css';
 
+// Define possible permission states
+type PermissionStateName = 'granted' | 'denied' | 'prompt' | 'unsupported';
+
+// Define our permission status interface
 interface PermissionStatus {
   name: string;
-  state: PermissionState;
+  state: PermissionStateName;
 }
 
 const PermissionsList = () => {
+  const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState<PermissionStatus[]>([]);
 
   useEffect(() => {
@@ -18,31 +23,35 @@ const PermissionsList = () => {
       'geolocation'
     ];
 
-    const checkPermissions = async () => {
+    const checkPermission = async (name: string): Promise<PermissionStatus> => {
       try {
-        const permissionResults = await Promise.all(
-          permissionsToCheck.map(async (permission) => {
-            try {
-              const result = await navigator.permissions.query({ name: permission as PermissionName });
-              return {
-                name: permission,
-                state: result.state
-              };
-            } catch (error) {
-              return {
-                name: permission,
-                state: 'unsupported' as PermissionState
-              };
-            }
-          })
-        );
-        setPermissions(permissionResults);
+        const result = await navigator.permissions.query({ name: name as PermissionName });
+        return {
+          name,
+          state: result.state as PermissionStateName
+        };
       } catch (error) {
-        console.error('Error checking permissions:', error);
+        return {
+          name,
+          state: 'unsupported'
+        };
       }
     };
 
-    checkPermissions();
+    const checkAllPermissions = async () => {
+      try {
+        const results = await Promise.all(
+          permissionsToCheck.map(permission => checkPermission(permission))
+        );
+        setPermissions(results);
+      } catch (error) {
+        console.error('Error checking permissions:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAllPermissions();
   }, []);
 
   const renderPermissionsList = () => {
@@ -59,12 +68,18 @@ const PermissionsList = () => {
   };
 
   return (
-    <div className="permissions-container">
+    <div className="permissions-container info-group">
       <h2 className="permissions-title">Permissions</h2>
       <ul className="permissions-list">
-        {permissions.length > 0 ? renderPermissionsList() : (
+        {loading ? (
           <li className="permissions-loading">
             Loading permissions...
+          </li>
+        ) : permissions.length > 0 ? (
+          renderPermissionsList()
+        ) : (
+          <li className="permissions-loading">
+            No permissions available
           </li>
         )}
       </ul>
