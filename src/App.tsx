@@ -1,6 +1,5 @@
 import React from "react";
 import UserInfoComponent, { LocationProvider } from "./components/UserInfo";
-import Permissions from "./components/Permissions";
 import "./App.css";
 
 const App: React.FC = () => {
