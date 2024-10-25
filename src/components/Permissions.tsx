@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './Permissions.css';
 
 // Define possible permission states
 type PermissionStateName = 'granted' | 'denied' | 'prompt' | 'unsupported';
@@ -68,8 +67,9 @@ const PermissionsList = () => {
   };
 
   return (
-    <div className="permissions-container info-group">
-      <h2 className="permissions-title">Permissions</h2>
+    <section className="central-content">
+    <div className="permissions-container">
+      <h2 className="permissions-title">permissions: </h2>
       <ul className="permissions-list">
         {loading ? (
           <li className="permissions-loading">
@@ -79,11 +79,12 @@ const PermissionsList = () => {
           renderPermissionsList()
         ) : (
           <li className="permissions-loading">
-            No permissions available
+            no permissions available
           </li>
         )}
       </ul>
     </div>
+    </section>
   );
 };
 

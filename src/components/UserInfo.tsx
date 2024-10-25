@@ -6,6 +6,7 @@ import React, {
     useContext,
   } from "react";
   import axios from "axios";
+  import Permissions from "./Permissions";
   
   interface IpInfo {
     error?: boolean;
@@ -334,6 +335,7 @@ import React, {
           <section className="map-placeholder">
             <p>map to be displayed here...</p>
           </section>
+          <Permissions />
         </section>
   
         <section className="left-panel">
