@@ -28,8 +28,9 @@ interface IpInfo {
 }
 
 interface UserInfo {
+    
   time: {
-    localTime: string;
+    systemTime: string;
     timezone?: string;
     timeZoneOffset: number;
   };
@@ -175,14 +176,16 @@ const UserInfoComponent: React.FC = () => {
   );
 
   const getUserInfo = useCallback(async () => {
+    
     try {
       setLoading(true);
       const ipAddress = await fetchIpAddress();
       const IpInfo = await fetchIpInfo(ipAddress);
 
       const userInfo: UserInfo = {
+        
         time: {
-          localTime: new Date().toLocaleString(),
+          systemTime: new Date().toLocaleString(),
           timezone: IpInfo.timezone,
           timeZoneOffset: new Date().getTimezoneOffset() / 60,
         },
@@ -243,6 +246,66 @@ const UserInfoComponent: React.FC = () => {
       getUserInfo();
     }
   }, [getUserInfo, locationLoading]);
+
+
+
+// new idea for formatting data display
+
+// interface DisplayConfig {
+//     displayName: string;
+//     format: (value: any) => string;
+// }
+
+// const displayConfigs: Record<string, DisplayConfig> ={
+//     accuracy: {
+//         displayName: "Accuracy",
+//         format: (value: any): string =>
+//             typeof value === "number" ? `${value.toFixed(2)} meters` : "n/a",
+//     },
+//     country_population: {
+//         displayName: 'Population',
+//         format: (value: any): string =>
+//             typeof value === "number" ? `${value.toFixed(2)} people` : "not found",
+//     },
+//     latitude: {
+//         displayName: 'Latitude',
+//         format: (value: any): string =>
+//             typeof value === "number" ? `${value.toFixed(4)}` : "not found",
+//     },
+//     longitude: {
+//         displayName: 'Longitude',
+//         format: (value: any): string =>
+//             typeof value === "number" ? `${value.toFixed(4)}` : "not found",
+//     },
+
+//     deviceMemory: {
+//         displayName: "Device Memory",
+//         format: (value: any): string => `${value.toLocaleString()} GB`,
+//       },
+
+//       hardwareConcurrency: {
+//         displayName: "CPU Cores",
+//         format: (value: any): string => `${value.toLocaleString()}`,
+//       },
+//     };
+// interface FormattedValue{
+//     displayName: string;
+//     formattedValue: string;
+// }
+
+// const formatValue = (key: string, value: any): FormattedValue =>{
+//     const config = displayConfigs[key] ?? {
+//         displayName: key,
+//         format: (value: any) => value.toString() ?? "n/a"
+//     };
+//     return {
+//         displayName: key,
+//         formattedValue: config.format(value),
+//     };
+// };
+
+
+
 
   const formatValue = (key: string, value: any): string => {
     switch (key) {
