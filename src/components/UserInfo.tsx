@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import Permissions from "./Permissions";
+import AnalogClock from "./Clock";
 
 interface IpInfo {
   error?: boolean;
@@ -337,6 +338,7 @@ const UserInfoComponent: React.FC = () => {
 
       <section className="left-panel">
         {renderGroup("your location", userInfo.location, "location-info")}
+        <AnalogClock />
         {renderGroup("your time", userInfo.time, "time-info")}
       </section>
       <section className="right-panel">
