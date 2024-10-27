@@ -1,320 +1,341 @@
 :root {
-    /* color Variables */
-    --primary-color: #008081;
-    --secondary-color: #48ada4;
-    --highlight-color: #ffd700;
-    --highlight-darker-color: #d7b740;
-    --text-color: #000;
-    --white: #fff;
+  /* color Variables */
+  --primary-color: #008081;
+  --secondary-color: #48ada4;
+  --highlight-color: #ffd700;
+  --highlight-darker-color: #d7b740;
+  --dark-text-color: #000;
+  --light-text-colour: #fff;
+  --title-text-colour: rgb(238, 249, 255);
+  
 
-    /* shadow Variables */
-    --box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --box-shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --box-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
+  /* shadow Variables */
+  --box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --box-shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --box-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
 
-    /* size Variables */
-    --max-width: 1200px;
-    --padding-large: 20px;
-    --padding-medium: 15px;
-    --padding-small: 5px;
-    --border-radius: 8px;
-    --font-size-large: 2rem;
-    --font-size-medium: 1.2rem;
-    --font-size-small: 0.875rem;
+  /* size Variables */
+  --max-width: 1200px;
+  --padding-large: 20px;
+  --padding-medium: 15px;
+  --padding-small: 5px;
+  --border-radius: 8px;
+  --font-size-large: 2rem;
+  --font-size-medium: 1.2rem;
+  --font-size-small: 0.875rem;
 
-    --gap-small: .25rem;
-    --gap-med: 1rem;
-    --gap-large: 2rem;
+  --gap-small: 0.25rem;
+  --gap-med: 1rem;
+  --gap-large: 2rem;
+  --gap-largest: 5rem;
 }
-
 
 /* main container */
 .user-info {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: var(--padding-large);
-    display: grid;
-    grid-template-columns: 1fr minmax(300px, 2fr) 1fr;
-    gap: var(--gap-large);
-    color: var(--text-color);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--padding-large);
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 2fr) 1fr;
+  gap: var(--gap-large);
+  color: var(--dark-text-color);
 }
 
 /* title  */
 
-.user-info h1 {
-    grid-column: 1 / -1;
-    text-align: center;
-    color: var(--primary-color);
-    font-size: var(--font-size-large);
-    margin-bottom: 2rem;
+.user-info h1.title {
+  grid-column: 1 / -1;
+  position: relative;
+  text-align: center;
+  color: var(--title-text-colour);
+  font-size: var(--font-size-large);
+  margin: 0 var(--gap-largest) 0 var(--gap-largest);
+  padding: var(--gap-med);
+  border-radius: var(--gap-med) var(--gap-med) 0 0;
+  background-color: var(--secondary-color);
 }
-
 
 /* central column wrapper, coordinates and map */
 .central-content {
-    grid-column: 2;
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-med);
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-med);
 }
 
 /* coordinates  */
 .coordinates-info {
-    background-color: var(--highlight-color);
-    border-radius: var(--border-radius);
-    padding: var(--padding-medium);
-    text-align: center;
-    box-shadow: var(--box-shadow-medium);
+  background-color: var(--highlight-color);
+  border-radius: var(--border-radius);
+  padding: var(--padding-medium);
+  text-align: center;
+  box-shadow: var(--box-shadow-medium);
 }
 
 /* map placeholder  */
 .map-placeholder {
-    background-color: var(--highlight-darker-color);
-    border-radius: var(--border-radius);
-    padding: var(--padding-large);
-    text-align: center;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: var(--highlight-darker-color);
+  border-radius: var(--border-radius);
+  padding: var(--padding-large);
+  text-align: center;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* left side content wrapper */
 .left-panel {
-    grid-column: 1;
-    grid-row: 2 / span 2; /* extend to span both rows */
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-med);
+  grid-column: 1;
+  grid-row: 2 / span 2; /* extend to span both rows */
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-med);
 }
 
 /* right side content wrapper */
 .right-panel {
-    grid-column: 3;
-    grid-row: 2 / span 2; /* extend to span both rows */
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-med);
+  grid-column: 3;
+  grid-row: 2 / span 2; /* extend to span both rows */
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-med);
 }
 
 /* permissions section */
 .permissions-container {
-    grid-column: 2;
-    background-color: var(--secondary-color);
-    border-radius: var(--border-radius);
-    padding: var(--padding-large);
-    color: var(--white);
-    box-shadow: var(--box-shadow-medium);
+  grid-column: 2;
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: var(--padding-large);
+  color: var(--light-text-colour);
+  box-shadow: var(--box-shadow-medium);
 }
 
 .permissions-title {
-    color: var(--white);
-    font-size: var(--font-size-medium);
-    margin-bottom: 15px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: var(--padding-small);
+  color: var(--light-text-colour);
+  font-size: var(--font-size-medium);
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: var(--padding-small);
 }
 
 .permissions-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--gap-small);
-    padding: 0;
-    list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--gap-small);
+  padding: 0;
+  list-style: none;
 }
 
 .permission-item {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: var(--padding-small);
-    border-radius: var(--border-radius);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: var(--padding-small);
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .permission-name {
-    text-transform: none;
+  text-transform: none;
 }
 
 .permission-status {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: var(--font-size-small);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: var(--font-size-small);
 }
 
 .permission-status.granted {
-    background-color: #35938d;
+  background-color: #35938d;
 }
 
 .permission-status.denied {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
 
 .permission-status.prompt,
 .permission-status.unsupported {
-    background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* location & time information */
 .location-info,
 .time-info {
-    background-color: var(--secondary-color);
-    color: var(--white);
+  background-color: var(--secondary-color);
+  color: var(--light-text-colour);
 }
 
 /* network information */
 .network-info {
-    background-color: #35938d;
-    color: var(--white);
+  background-color: #35938d;
+  color: var(--light-text-colour);
 }
 
 /* other, less dramatic info */
 .browser-info,
 .device-info,
 .connection-info {
-    background-color: var(--primary-color);
-    color: var(--white);
+  background-color: var(--primary-color);
+  color: var(--light-text-colour);
 }
 
 /* common styles for info groups */
 .info-group {
-    padding: var(--padding-medium);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow-light);
-    transition: transform 0.2s ease;
+  padding: var(--padding-medium);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-light);
+  transition: transform 0.2s ease;
 }
 
 .info-group:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--box-shadow-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow-hover);
 }
 
 /* responsive design */
 @media (max-width: 1024px) {
-    .user-info {
-        grid-template-columns: 1fr minmax(300px, 1fr);
-        padding: var(--padding-medium);
-    }
+  .user-info {
+    grid-template-columns: 1fr minmax(300px, 1fr);
+    padding: var(--padding-medium);
+  }
 
-    .central-content {
-        grid-column: 1 / -1;
-    }
+  .central-content {
+    grid-column: 1 / -1;
+  }
 
-    .permissions-container,
-    .left-panel,
-    .right-panel {
-        grid-column: 1 / -1;
-    }
+  .permissions-container,
+  .left-panel,
+  .right-panel {
+    grid-column: 1 / -1;
+  }
 
-    /* stacking */
+  /* stacking */
 
-    .permissions-container {
-        grid-row: 3;
-    }
+  .permissions-container {
+    grid-row: 3;
+  }
 
-    .left-panel {
-        grid-row: 4;
-    }
+  .left-panel {
+    grid-row: 4;
+  }
 
-    .right-panel {
-        grid-row: 5;
-    }
+  .right-panel {
+    grid-row: 5;
+  }
 }
 
 @media (max-width: 768px) {
-    .user-info {
-        grid-template-columns: 1fr;
-    }
+  .user-info {
+    grid-template-columns: 1fr;
+  }
 
-    .central-content,
-    .permissions-container,
-    .left-panel,
-    .right-panel {
-        grid-column: 1;
-    }
-
-
-    
+  .central-content,
+  .permissions-container,
+  .left-panel,
+  .right-panel {
+    grid-column: 1;
+  }
 }
-
-
 
 /* the clock  */
 
-.clock{
-    width: 10rem;
-    height: 10rem;
-    padding: auto;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    border: 2px solid black;
-    position: relative;
-    justify-self: center;
+.clock {
+  width: 10rem;
+  height: 10rem;
+  padding: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  border: 2px solid black;
+  position: relative;
+  justify-self: center;
 }
 
-.clock .number{
---rotation: 0;
-position:absolute;
-width: 100%;
-height: 100%;
-text-align: center;
-transform: rotate(var(--rotation));
-font-size: 1.5rem;
+.clock .number {
+  --rotation: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transform: rotate(var(--rotation));
+  font-size: 1.5rem;
 }
 
-.clock .number1 {--rotation: 30deg;}
-.clock .number2 {--rotation: 60deg;}
-.clock .number3 {--rotation: 90deg;}
-.clock .number4 {--rotation: 120deg;}
-.clock .number5 {--rotation: 150deg;}
-.clock .number6 {--rotation: 180deg;}
-.clock .number7 {--rotation: 210deg;}
-.clock .number8 {--rotation: 240deg;}
-.clock .number9 {--rotation: 270deg;}
-.clock .number10 {--rotation: 300deg;}
-.clock .number11 {--rotation: 330deg;}
-
-
-.clock .hand{
-    --rotation: 0;
-    position: absolute;
-    bottom: 50%;
-    left: 50%;
-    background-color: black;
-    border: 1px solid whitesmoke;
-    transform-origin: bottom;
-    transform: translateX(-50%) rotate(calc(var(--rotation)*1deg));
-    border-top-left-radius:50%;
-    border-top-right-radius:50%;
+.clock .number1 {
+  --rotation: 30deg;
+}
+.clock .number2 {
+  --rotation: 60deg;
+}
+.clock .number3 {
+  --rotation: 90deg;
+}
+.clock .number4 {
+  --rotation: 120deg;
+}
+.clock .number5 {
+  --rotation: 150deg;
+}
+.clock .number6 {
+  --rotation: 180deg;
+}
+.clock .number7 {
+  --rotation: 210deg;
+}
+.clock .number8 {
+  --rotation: 240deg;
+}
+.clock .number9 {
+  --rotation: 270deg;
+}
+.clock .number10 {
+  --rotation: 300deg;
+}
+.clock .number11 {
+  --rotation: 330deg;
 }
 
-.clock .hand.second{
-    width: 3px;
-    height: 45%;
-    background-color: red;
+.clock .hand {
+  --rotation: 0;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  background-color: black;
+  border: 1px solid whitesmoke;
+  transform-origin: bottom;
+  transform: translateX(-50%) rotate(calc(var(--rotation) * 1deg));
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
 }
 
-.clock .hand.minute{
-    width: 7px;
-    height: 40%;
-    background-color: black;
+.clock .hand.second {
+  width: 3px;
+  height: 45%;
+  background-color: red;
 }
 
-.clock .hand.hour{
-    width: 8px;
-    height: 30%;
-    background-color: black;
+.clock .hand.minute {
+  width: 7px;
+  height: 40%;
+  background-color: black;
 }
 
-.clock::after{
-    content: '';
-    position: absolute;
-    background-color: black;
-    z-index: 11;
-    width: 15px;
-    height: 15px;
-    top:50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
+.clock .hand.hour {
+  width: 8px;
+  height: 30%;
+  background-color: black;
+}
+
+.clock::after {
+  content: "";
+  position: absolute;
+  background-color: black;
+  z-index: 11;
+  width: 15px;
+  height: 15px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
 }

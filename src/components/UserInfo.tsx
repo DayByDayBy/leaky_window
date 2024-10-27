@@ -381,7 +381,7 @@ const UserInfoComponent: React.FC = () => {
 
   return (
     <div className="user-info" role="main">
-      <h1>leaky window</h1>
+      <h1 className="title">leaky window</h1>
       <section className="central-content">
         {locationError && (
           <div className="location-error" role="alert">
