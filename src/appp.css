@@ -99,7 +99,7 @@
 .permissions-container {
     background-color: var(--secondary-color);
     border-radius: var(--border-radius);
-    padding: var(--padding-large);
+    padding: var(--padding-med);
     color: var(--white);
     box-shadow: var(--box-shadow-medium);
 }
@@ -125,12 +125,12 @@
     padding: var(--padding-small);
     border-radius: var(--border-radius);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
 .permission-status {
-    padding: 4px 8px;
+    padding: 4px 6px;
     border-radius: 4px;
     font-size: var(--font-size-small);
 }

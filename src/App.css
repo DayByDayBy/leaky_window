@@ -14,10 +14,10 @@
 
     /* size Variables */
     --max-width: 1200px;
-    --padding-large: 20px;
-    --padding-medium: 15px;
-    --padding-small: 5px;
-    --border-radius: 8px;
+    --padding-large: 2rem;
+    --padding-medium: 1.5rem;
+    --padding-small: .75rem;
+    --border-radius: 1rem;
     --font-size-large: 2rem;
     --font-size-medium: 1.2rem;
     --font-size-small: 0.875rem;
@@ -99,15 +99,16 @@
 .permissions-container {
     background-color: var(--secondary-color);
     border-radius: var(--border-radius);
-    padding: var(--padding-large);
+    padding: var(--padding-med);
     color: var(--white);
     box-shadow: var(--box-shadow-medium);
 }
 
 .permissions-title {
     color: var(--white);
+    padding: var(--padding-small);
     font-size: var(--font-size-medium);
-    margin-bottom: 15px;
+    margin-bottom: var(--gap-med);
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     padding-bottom: var(--padding-small);
 }
@@ -116,7 +117,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--gap-small);
-    padding: 0;
+    padding: var(--padding-small);
     list-style: none;
 }
 
@@ -130,7 +131,7 @@
 }
 
 .permission-status {
-    padding: 4px 8px;
+    padding: 4px 6px;
     border-radius: 4px;
     font-size: var(--font-size-small);
 }
